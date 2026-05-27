@@ -169,17 +169,19 @@ fun HomeScreen(
                             
                             Spacer(modifier = Modifier.height(4.dp))
                             
-                            // Mood Indicator
+                            // Level XP Progress
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(
-                                    imageVector = Icons.Default.Favorite,
-                                    contentDescription = "Mood",
+                                    imageVector = Icons.Default.AutoAwesome,
+                                    contentDescription = "Level XP",
                                     tint = Color(0xFFFF8A75),
                                     modifier = Modifier.size(12.dp)
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
+                                val xpToNextLevel = (pet.level * 100).coerceAtLeast(1)
+                                val levelProgress = (pet.exp.toFloat() / xpToNextLevel.toFloat()).coerceIn(0f, 1f)
                                 LinearProgressIndicator(
-                                    progress = pet.mood / 100f,
+                                    progress = levelProgress,
                                     modifier = Modifier
                                         .weight(1f)
                                         .height(6.dp)
@@ -189,7 +191,7 @@ fun HomeScreen(
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = "${pet.mood}%",
+                                    text = "${pet.exp}/$xpToNextLevel XP",
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = TextMuted
