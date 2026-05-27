@@ -1,0 +1,6 @@
+{
+  "name": "CozyCal",
+  "description": "Cozy self-care calendar and pet scheduling companion",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
