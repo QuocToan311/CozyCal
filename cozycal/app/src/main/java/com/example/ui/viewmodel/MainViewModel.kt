@@ -28,6 +28,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -56,6 +58,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     // Preview for scanning image scheduling flow
     var parsedPreviewEvents by mutableStateOf<List<CalendarEvent>>(emptyList())
     var showPreviewEventsDialog by mutableStateOf(false)
+
+    private val eventCompletionMutex = Mutex()
 
     // Focus state variables
     var focusSelectedMinutes by mutableStateOf(25)
@@ -190,13 +194,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun completeEvent(event: CalendarEvent) {
         viewModelScope.launch {
-            val newStatus = !event.isCompleted
-            repository.updateEventCompletion(event.id, newStatus)
+            eventCompletionMutex.withLock {
+                val currentEvent = repository.getEventById(event.id) ?: event
+                val newStatus = !currentEvent.isCompleted
+                repository.updateEventCompletion(currentEvent.id, newStatus)
 
-            if (newStatus) {
-                // Earn rewards!
-                givePetRewards(xpGained = 20, coinsGained = 20, moodGained = 15)
-                showSparkle("Mochi rất tự hào về bạn! +20 Exp, +20 Xu ✨")
+                if (newStatus && !currentEvent.rewardClaimed) {
+                    // Earn rewards only once per event.
+                    givePetRewards(xpGained = 20, coinsGained = 20, moodGained = 15)
+                    showSparkle("Mochi rất tự hào về bạn! +20 Exp, +20 Xu ✨")
+                }
             }
         }
     }

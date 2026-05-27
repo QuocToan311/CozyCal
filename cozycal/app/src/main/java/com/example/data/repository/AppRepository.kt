@@ -33,6 +33,8 @@ class AppRepository(private val appDao: AppDao) {
         return appDao.insertEvent(event)
     }
 
+    suspend fun getEventById(id: Long): CalendarEvent? = appDao.getEventById(id)
+
     suspend fun updateEventCompletion(id: Long, completed: Boolean) {
         appDao.updateEventCompletion(id, completed)
     }

@@ -37,7 +37,10 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEvent(event: CalendarEvent): Long
 
-    @Query("UPDATE calendar_events SET isCompleted = :completed WHERE id = :id")
+    @Query("SELECT * FROM calendar_events WHERE id = :id LIMIT 1")
+    suspend fun getEventById(id: Long): CalendarEvent?
+
+    @Query("UPDATE calendar_events SET isCompleted = :completed, rewardClaimed = CASE WHEN :completed = 1 THEN 1 ELSE rewardClaimed END WHERE id = :id")
     suspend fun updateEventCompletion(id: Long, completed: Boolean)
 
     @Delete

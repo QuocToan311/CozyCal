@@ -13,6 +13,7 @@ data class CalendarEvent(
     val endTime: Long, // Epoch millis
     val colorHex: String, // Pastel hex token
     val isCompleted: Boolean = false,
+    val rewardClaimed: Boolean = false,
     val category: String = "general", // "study", "self-care", "work", "routine"
     val isRecurring: Boolean = false
 )

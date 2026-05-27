@@ -13,7 +13,7 @@ import com.example.data.model.User
 
 @Database(
     entities = [CalendarEvent::class, Habit::class, PetState::class, FocusSession::class, User::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
