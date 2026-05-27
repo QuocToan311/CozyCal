@@ -579,8 +579,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     // Insert direct event from standard form
     fun addDirectEvent(title: String, category: String, startHour: Int, startMin: Int, duration: Int, desc: String, offsetDays: Int) {
         viewModelScope.launch {
+            val safeOffsetDays = offsetDays.coerceIn(0, 1)
             val baseCal = Calendar.getInstance()
-            baseCal.add(Calendar.DAY_OF_YEAR, offsetDays)
+            baseCal.add(Calendar.DAY_OF_YEAR, safeOffsetDays)
             baseCal.set(Calendar.HOUR_OF_DAY, startHour)
             baseCal.set(Calendar.MINUTE, startMin)
             val startTime = baseCal.timeInMillis
