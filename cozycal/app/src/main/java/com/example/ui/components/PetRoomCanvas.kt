@@ -75,23 +75,43 @@ fun PetRoomCanvas(
 
         // --- SPECIFIC COAT COLORS FOR PETS ---
         val primaryColor = when (petType) {
-            "Cat" -> Color(0xFFFAF6EE) // Soft Cream
-            "Bunny" -> Color(0xFFFFF9F9) // Clean White-Pink
-            "Fox" -> Color(0xFFFF8A65) // Cozy Warm Orange
-            "Bear" -> Color(0xFFA1887F) // Soft Brown Bear
-            "Penguin" -> Color(0xFF37474F) // Cozy Charcoal Blue-Grey
-            "Hamster" -> Color(0xFFFFB74D) // Chubby Honey Yellow
-            else -> Color(0xFFFAF6EE)
+            "Cat" -> Color(0xFFF4D3A6) // Warm caramel cream
+            "Bunny" -> Color(0xFFFFE2E2) // Soft strawberry milk
+            "Fox" -> Color(0xFFFF7A45) // Rich foxy orange
+            "Bear" -> Color(0xFF8D6E63) // Deeper cozy brown
+            "Penguin" -> Color(0xFF263238) // Strong charcoal slate
+            "Hamster" -> Color(0xFFFFA726) // Bright honey amber
+            else -> Color(0xFFF4D3A6)
         }
 
         val secondaryColor = when (petType) {
-            "Cat" -> Color(0xFFFFFFFF)
-            "Bunny" -> Color(0xFFFFFFFF)
-            "Fox" -> Color(0xFFFFFFFF) // White chest/muzzle
-            "Bear" -> Color(0xFFD7CCC8) // Lighter brown nose pad
-            "Penguin" -> Color(0xFFFFFFFF) // White belly
-            "Hamster" -> Color(0xFFFFF3E0) // Warm light cream belly
-            else -> Color(0xFFFFFFFF)
+            "Cat" -> Color(0xFFFFF8EE)
+            "Bunny" -> Color(0xFFFFFBFC)
+            "Fox" -> Color(0xFFFFF4E6) // Bright chest/muzzle
+            "Bear" -> Color(0xFFE7D5CB) // Softer lighter belly
+            "Penguin" -> Color(0xFFF2F7FA) // Crisp white belly
+            "Hamster" -> Color(0xFFFFF1D9) // Warm cream belly
+            else -> Color(0xFFFFF8EE)
+        }
+
+        val outlineColor = when (petType) {
+            "Cat" -> Color(0xFFB57E4D)
+            "Bunny" -> Color(0xFFE09AA6)
+            "Fox" -> Color(0xFFCC5E2F)
+            "Bear" -> Color(0xFF6D4C41)
+            "Penguin" -> Color(0xFF0F1C23)
+            "Hamster" -> Color(0xFFE08A1C)
+            else -> Color(0xFFB57E4D)
+        }
+
+        val blushColor = when (petType) {
+            "Cat" -> Color(0x66FF8A80)
+            "Bunny" -> Color(0x77FF8FA0)
+            "Fox" -> Color(0x55FF9A7A)
+            "Bear" -> Color(0x55E7A17A)
+            "Penguin" -> Color(0x44A7D8F0)
+            "Hamster" -> Color(0x77FFB74D)
+            else -> Color(0x66FF8A80)
         }
 
         // 1. Draw Lamp light beam if lamp is active
@@ -267,6 +287,11 @@ fun PetRoomCanvas(
 
         // 7. Draw Pet Body
         drawOval(
+            color = outlineColor.copy(alpha = 0.15f),
+            topLeft = Offset(centerX - 83f, centerY - 28f + breathingOffset),
+            size = Size(156f, 91f)
+        )
+        drawOval(
             color = primaryColor,
             topLeft = Offset(centerX - 80f, centerY - 25f + breathingOffset),
             size = Size(150f, 85f)
@@ -283,6 +308,11 @@ fun PetRoomCanvas(
 
         // 8. Draw Pet Head
         val headY = centerY - 52f + breathingOffset
+        drawCircle(
+            color = outlineColor.copy(alpha = 0.15f),
+            radius = 53f,
+            center = Offset(centerX, headY - 1f)
+        )
         drawCircle(
             color = primaryColor,
             radius = 50f,
@@ -304,15 +334,29 @@ fun PetRoomCanvas(
                     lineTo(centerX + 12f, headY - 45f)
                     close()
                 }
+                drawPath(leftEar, outlineColor.copy(alpha = 0.18f))
+                drawPath(rightEar, outlineColor.copy(alpha = 0.18f))
                 drawPath(leftEar, primaryColor)
                 drawPath(rightEar, primaryColor)
                 
                 // Pink inner ears
-                drawCircle(Color(0xFFFFCDD2), radius = 8f, center = Offset(centerX - 35f, headY - 38f))
-                drawCircle(Color(0xFFFFCDD2), radius = 8f, center = Offset(centerX + 35f, headY - 38f))
+                drawCircle(Color(0xFFFFAAB4), radius = 8f, center = Offset(centerX - 35f, headY - 38f))
+                drawCircle(Color(0xFFFFAAB4), radius = 8f, center = Offset(centerX + 35f, headY - 38f))
             }
             "Bunny" -> {
                 // Tall upright Bunny Ears
+                drawRoundRect(
+                    color = outlineColor.copy(alpha = 0.18f),
+                    topLeft = Offset(centerX - 37f, headY - 97f),
+                    size = Size(28f, 64f),
+                    cornerRadius = CornerRadius(14f, 14f)
+                )
+                drawRoundRect(
+                    color = outlineColor.copy(alpha = 0.18f),
+                    topLeft = Offset(centerX + 9f, headY - 97f),
+                    size = Size(28f, 64f),
+                    cornerRadius = CornerRadius(14f, 14f)
+                )
                 drawRoundRect(
                     color = primaryColor,
                     topLeft = Offset(centerX - 35f, headY - 95f),
@@ -327,13 +371,13 @@ fun PetRoomCanvas(
                 )
                 // Bunny inner pink ears
                 drawRoundRect(
-                    color = Color(0xFFFFCDD2),
+                    color = Color(0xFFFFAAB4),
                     topLeft = Offset(centerX - 30f, headY - 88f),
                     size = Size(14f, 44f),
                     cornerRadius = CornerRadius(7f, 7f)
                 )
                 drawRoundRect(
-                    color = Color(0xFFFFCDD2),
+                    color = Color(0xFFFFAAB4),
                     topLeft = Offset(centerX + 16f, headY - 88f),
                     size = Size(14f, 44f),
                     cornerRadius = CornerRadius(7f, 7f)
@@ -353,31 +397,37 @@ fun PetRoomCanvas(
                     lineTo(centerX + 12f, headY - 45f)
                     close()
                 }
+                drawPath(leftEarFox, outlineColor.copy(alpha = 0.18f))
+                drawPath(rightEarFox, outlineColor.copy(alpha = 0.18f))
                 drawPath(leftEarFox, primaryColor)
                 drawPath(rightEarFox, primaryColor)
 
                 // Dark Fox Tips
-                drawCircle(Color(0xFF3E2723), radius = 10f, center = Offset(centerX - 48f, headY - 64f))
-                drawCircle(Color(0xFF3E2723), radius = 10f, center = Offset(centerX + 48f, headY - 64f))
+                drawCircle(outlineColor, radius = 10f, center = Offset(centerX - 48f, headY - 64f))
+                drawCircle(outlineColor, radius = 10f, center = Offset(centerX + 48f, headY - 64f))
 
                 // Inner cream/white
-                drawCircle(Color(0xFFFAF6EE), radius = 8f, center = Offset(centerX - 32f, headY - 36f))
-                drawCircle(Color(0xFFFAF6EE), radius = 8f, center = Offset(centerX + 32f, headY - 36f))
+                drawCircle(Color(0xFFFFF1DC), radius = 8f, center = Offset(centerX - 32f, headY - 36f))
+                drawCircle(Color(0xFFFFF1DC), radius = 8f, center = Offset(centerX + 32f, headY - 36f))
             }
             "Bear" -> {
                 // Chubby Brown Round Bear Ears
+                drawCircle(outlineColor.copy(alpha = 0.18f), radius = 22f, center = Offset(centerX - 38f, headY - 36f))
+                drawCircle(outlineColor.copy(alpha = 0.18f), radius = 22f, center = Offset(centerX + 38f, headY - 36f))
                 drawCircle(primaryColor, radius = 20f, center = Offset(centerX - 38f, headY - 36f))
                 drawCircle(primaryColor, radius = 20f, center = Offset(centerX + 38f, headY - 36f))
                 // Inner ears cream
-                drawCircle(Color(0xFFD7CCC8), radius = 11f, center = Offset(centerX - 38f, headY - 36f))
-                drawCircle(Color(0xFFD7CCC8), radius = 11f, center = Offset(centerX + 38f, headY - 36f))
+                drawCircle(Color(0xFFEBDDCF), radius = 11f, center = Offset(centerX - 38f, headY - 36f))
+                drawCircle(Color(0xFFEBDDCF), radius = 11f, center = Offset(centerX + 38f, headY - 36f))
             }
             "Hamster" -> {
                 // Tiny round pink/apricot ears
+                drawCircle(outlineColor.copy(alpha = 0.18f), radius = 18f, center = Offset(centerX - 36f, headY - 38f))
+                drawCircle(outlineColor.copy(alpha = 0.18f), radius = 18f, center = Offset(centerX + 36f, headY - 38f))
                 drawCircle(primaryColor, radius = 16f, center = Offset(centerX - 36f, headY - 38f))
                 drawCircle(primaryColor, radius = 16f, center = Offset(centerX + 36f, headY - 38f))
-                drawCircle(Color(0xFFFFCDD2), radius = 9f, center = Offset(centerX - 36f, headY - 38f))
-                drawCircle(Color(0xFFFFCDD2), radius = 9f, center = Offset(centerX + 36f, headY - 38f))
+                drawCircle(Color(0xFFFFC08A), radius = 9f, center = Offset(centerX - 36f, headY - 38f))
+                drawCircle(Color(0xFFFFC08A), radius = 9f, center = Offset(centerX + 36f, headY - 38f))
             }
             "Penguin" -> {
                 // No external ears, maybe details for cute cozy headphones or earmuffs simulation? Just cute smooth penguin head!
@@ -412,8 +462,8 @@ fun PetRoomCanvas(
         }
 
         // Rosy Blushing Cheeks
-        drawCircle(Color(0x44FF8A80), radius = 10f, center = Offset(centerX - 32f, headY + 12f))
-        drawCircle(Color(0x44FF8A80), radius = 10f, center = Offset(centerX + 32f, headY + 12f))
+        drawCircle(blushColor, radius = 10f, center = Offset(centerX - 32f, headY + 12f))
+        drawCircle(blushColor, radius = 10f, center = Offset(centerX + 32f, headY + 12f))
 
         // Eyes rendering
         if (isSleeping) {
